@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
+from blogs.serializers import BlogSerializer, CommentSerializer
 from students.models import Student
 from .serializers import StudentSerializer,EmployeeSerializer
 from rest_framework.response import Response
@@ -9,6 +10,7 @@ from rest_framework.views import APIView
 from employees.models import Employee
 from django.http import Http404
 from rest_framework import mixins, generics, viewsets
+from blogs.models import Blog, Comment
 
 # Create your views here.
 @api_view(['GET','POST'])
@@ -133,7 +135,7 @@ def studentDetailView(request, pk):
 #     lookup_field = 'pk'
     
 
-    
+# Viewset    
 # class EmployeeViewset(viewsets.ViewSet):
 #     def list(self, request):
 #         queryset = Employee.objects.all()
@@ -166,7 +168,30 @@ def studentDetailView(request, pk):
 #         employee.delete()
 #         return Response(status= status.HTTP_204_NO_CONTENT)
 
+#model viewset
+class EmployeeViewset(viewsets.ModelViewSet):
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeSerializer
+    
+class BlogsView(generics.ListCreateAPIView):
+    queryset = Blog.objects.all()
+    serializer_class = BlogSerializer
+    
+class CommentsView(generics.ListCreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    
 
+class BlogDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Blog.objects.all()
+    serializer_class = BlogSerializer
+    lookup_field = 'pk'
+    
+
+class CommentDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    lookup_field = 'pk'
     
             
     
