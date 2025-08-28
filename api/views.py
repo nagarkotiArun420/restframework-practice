@@ -12,6 +12,9 @@ from django.http import Http404
 from rest_framework import mixins, generics, viewsets
 from blogs.models import Blog, Comment
 from .paginations import CustomPagination
+from django_filters.rest_framework import DjangoFilterBackend
+from api.filters import EmployeeFilter
+
 
 # Create your views here.
 @api_view(['GET','POST'])
@@ -174,6 +177,7 @@ class EmployeeViewset(viewsets.ModelViewSet):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
     pagination_class = CustomPagination
+    filterset_class = EmployeeFilter
     
 class BlogsView(generics.ListCreateAPIView):
     queryset = Blog.objects.all()
